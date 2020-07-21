@@ -1,0 +1,7 @@
+{
+  "name": "habbit-tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
