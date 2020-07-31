@@ -25,6 +25,7 @@ import InterAd from './components/common/InterAd';
 import InAppPurchase from './components/common/InAppPurchase';
 import { PublicRoute, PrivateRoute} from './utils/routing';
 import Login from './pages/Login';
+import './App.css'
 
 
 const App: React.FC = () => {

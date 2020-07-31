@@ -38,8 +38,8 @@ export default function stats(state=initialState, action: RootAction): typeof in
     
     case (ActionType.UNCOMPLETE_HABIT):
       newStats = {...state}
-      newStats.stats[today].habitsCompleted = newStats.stats[today].habitsCompleted + 1
-      return {...newStats, today: {...state.today, habitsCompleted: state.today.habitsCompleted + 1}}
+      newStats.stats[today].habitsCompleted = newStats.stats[today].habitsCompleted - 1
+      return {...newStats, today: {...state.today, habitsCompleted: state.today.habitsCompleted - 1}}
   
     default:
       return state;

@@ -29,7 +29,7 @@ export const InAppPurchaseContainer = ({ getProducts, removeAds }: Props): React
 
   // in app purchase
   useEffect(() => {
-    store.verbosity = InAppPurchase2.DEBUG;
+    // store.verbosity = InAppPurchase2.DEBUG;
     store.register({
       id: 'removeAdsSub',
       type: InAppPurchase2.PAID_SUBSCRIPTION,
