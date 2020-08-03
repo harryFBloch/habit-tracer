@@ -5,7 +5,7 @@ import { RootState, ThunkDispatchType, Habits, actions, Habit } from '../store';
 import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import {checkmarkCircle, hammerOutline, trashBinOutline, arrowUndoCircle, addOutline} from 'ionicons/icons';
+import {checkmarkCircle, hammerOutline, trashBinOutline, arrowUndoCircle, addOutline, time} from 'ionicons/icons';
 import Toolbar from '../components/common/Toolbar';
 import { randomQuote } from '../quotes';
 
@@ -119,6 +119,8 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
     </IonItemSliding>
     )
   }
+
+  const sortedHabits = habits.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
   
   return (
     <IonPage>
@@ -138,7 +140,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
         </div>
         {habits && habits.length > 0 &&
           <IonList ref={listRef} className={classes.listContainer}>  
-            {habits.map((habit) => !habit.deleted && renderHabit(habit))}
+            {sortedHabits.map((habit) => !habit.deleted && renderHabit(habit))}
           </IonList>
         }
         {habits.length === 0 &&

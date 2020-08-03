@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
 import { IonToolbar, IonHeader, IonButtons, IonMenuButton, IonButton, IonIcon} from '@ionic/react';
 import classes from './Toolbar.module.css';
-import { ICONS }from '../../icons';
-import RenderSVG from './RenderSVG';
 import { menu, arrowBack } from 'ionicons/icons';
 
 interface Props {

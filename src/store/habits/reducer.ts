@@ -1,7 +1,6 @@
 import { ActionType } from "../actionTypes";
 import { Habits } from "./types";
 import { RootAction } from "..";
-import { saveHabits } from "./actions";
 
 const initialState: Habits = [];
 
