@@ -108,9 +108,11 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
         <IonLabel className="ion-text-center ion-text-bold" slot="start">
           {habit.title}
         </IonLabel>
-        <IonText slot="end" className={classes.timeLabel}>
-          {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(habit.time))}
-        </IonText>
+        {habit.time !== '' &&
+          <IonText slot="end" className={classes.timeLabel}>
+            {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(habit.time))}
+          </IonText>
+        }
       </IonItem>
     </IonItemSliding>
     )
@@ -134,7 +136,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
         </div>
         {habits && habits.length > 0 &&
           <IonList ref={listRef} className={classes.listContainer}>  
-            {habits.map((habit) => renderHabit(habit))}
+            {habits.map((habit) => !habit.deleted && renderHabit(habit))}
           </IonList>
         }
         {habits.length === 0 &&

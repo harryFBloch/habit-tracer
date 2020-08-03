@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption, IonToggle } from '@ionic/react';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { connect } from 'react-redux';
 import classes from './AddHabit.module.css'
@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import Toolbar from '../components/common/Toolbar';
 import { title } from 'process';
+import { deleteNotifiactions } from '../store/habits/actions';
 
 interface ReduxStateProps {
   habits: Habits
@@ -44,6 +45,7 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
   const [weekdays, setWeekdays] = useState([0,1,2,3,4,5,6]);
   const [habitName, setHabitName] = useState('');
   const [message, setMessage] = useState('');
+  const [reminder, setReminder] = useState(true)
 
   useEffect(() => {
     if (match.params.habitID) {
@@ -57,14 +59,16 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
   }, [match, habits])
 
   const setNotifiaction = (weekday: number): void => {
-    const timeArray = selectedTime.split('T')[1].split(':')
-      if (timeArray) {
-        LocalNotifications.schedule({
-          id: habits.length * 10 + weekday,
-          title: `TIME TO ${habitName}`,
-          trigger: {every: { weekday: weekday, hour: Number(timeArray[0]), minute: Number(timeArray[1])}, count: 365}
-        })
-      }
+    if (reminder) {
+      const timeArray = selectedTime.split('T')[1].split(':')
+        if (timeArray) {
+          LocalNotifications.schedule({
+            id: habits.length * 10 + weekday,
+            title: `TIME TO ${habitName}`,
+            trigger: {every: { weekday: weekday, hour: Number(timeArray[0]), minute: Number(timeArray[1])}, count: 365}
+          })
+        }
+    }
   }
 
   const resetState = (): void => {
@@ -75,7 +79,6 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
   }
 
   const handleSaveHabit = (): void => {
-    weekdays.forEach((weekday) => setNotifiaction(weekday))
     const habit: Habit = {
       notificatiions: weekdays,
       title: habitName,
@@ -84,13 +87,20 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
       message: message,
       datesCompleted: [],
       dateCreated: Date.now(),
-      weekdays: weekdays
+      weekdays: weekdays,
+      deleted: false,
     }
+    //updating habit delete all possible notifactiioins the create new ones
+    match.params.habitID && deleteNotifiactions(habit, () => {
+      weekdays.forEach((weekday) => setNotifiaction(weekday))
+    });
+    //saving new habbit
+    reminder && !match.params.habitID && weekdays.forEach((weekday) => setNotifiaction(weekday))
     match.params.habitID ? updateHabit(habit) : addNewHabit(habit);
     showInterstitional();
     resetState();
   }
-  
+
   return (
     <IonPage>
       <Toolbar back/>
@@ -106,28 +116,37 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
             <IonInput value={message} onIonChange={(e) => setMessage(e.detail.value!)}/>
           </IonItem>
 
-        <IonItem className={classes.fullWidth} lines="full">
-          <IonLabel>Weekdays</IonLabel>
-          <IonSelect value={weekdays} multiple={true} cancelText="Cancel" okText="Okay!" onIonChange={e => setWeekdays(e.detail.value)} selectedText="">
-            <IonSelectOption value={WEEKDAYS.Monday}>Monday</IonSelectOption>
-            <IonSelectOption value={WEEKDAYS.Tuesday}>Tuesday</IonSelectOption>
-            <IonSelectOption value={WEEKDAYS.Wednesday}>Wednesday</IonSelectOption>
-            <IonSelectOption value={WEEKDAYS.Thursday}>Thursday</IonSelectOption>
-            <IonSelectOption value={WEEKDAYS.Friday}>Friday</IonSelectOption>
-            <IonSelectOption value={WEEKDAYS.Saterday}>Saturday</IonSelectOption>
-            <IonSelectOption value={WEEKDAYS.Sunday}>Sunday</IonSelectOption>
-          </IonSelect>
+        <IonItem lines="full">
+          <IonLabel slot="start">Set Reminder</IonLabel>
+          <IonToggle checked={reminder} onClick={() => setReminder(!reminder)} slot="end"/>
         </IonItem>
 
-        <IonItem className={classes.fullWidth} lines="full">
-          <IonLabel>Reminder Time</IonLabel>
-          <IonDatetime displayFormat="h:mm A" cancelText="Remove Reminder"
-          value={selectedTime} onIonChange={e => setSelectedTime(e.detail.value!)} 
-          onIonCancel={() => setSelectedTime('')}/>
-        </IonItem>
+        {reminder &&
+          <>
+            <IonItem className={classes.fullWidth} lines="full">
+              <IonLabel>Weekdays</IonLabel>
+              <IonSelect value={weekdays} multiple={true} cancelText="Cancel" okText="Okay!" onIonChange={e => setWeekdays(e.detail.value)} selectedText="">
+                <IonSelectOption value={WEEKDAYS.Monday}>Monday</IonSelectOption>
+                <IonSelectOption value={WEEKDAYS.Tuesday}>Tuesday</IonSelectOption>
+                <IonSelectOption value={WEEKDAYS.Wednesday}>Wednesday</IonSelectOption>
+                <IonSelectOption value={WEEKDAYS.Thursday}>Thursday</IonSelectOption>
+                <IonSelectOption value={WEEKDAYS.Friday}>Friday</IonSelectOption>
+                <IonSelectOption value={WEEKDAYS.Saterday}>Saturday</IonSelectOption>
+                <IonSelectOption value={WEEKDAYS.Sunday}>Sunday</IonSelectOption>
+              </IonSelect>
+            </IonItem>
+
+            <IonItem className={classes.fullWidth} lines="full">
+              <IonLabel>Reminder Time</IonLabel>
+              <IonDatetime displayFormat="h:mm A" cancelText="Remove Reminder"
+              value={selectedTime} onIonChange={e => setSelectedTime(e.detail.value!)} 
+              onIonCancel={() => setSelectedTime('')}/>
+            </IonItem>
+          </>
+        }
         </div>
         <IonButton onClick={handleSaveHabit} className={classes.saveButton} routerLink="/home" routerDirection="none"
-          disabled={selectedTime === '' || title === '' || message === '' || weekdays.length === 0} >
+          disabled={ title === '' || message === '' || (reminder && (weekdays.length === 0 || selectedTime === ''))} >
           Save
         </IonButton>
       </div>

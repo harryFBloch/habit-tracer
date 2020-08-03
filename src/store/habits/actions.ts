@@ -39,10 +39,18 @@ export const getHabits = (): ThunkResult<Promise<void>> =>
   })
 }
 
-export const deleteNotifiactions = (habit: Habit): void => {
-  habit.notificatiions.forEach((id) => {
-    LocalNotifications.cancel(habit.id * 10 + id)
-  })
+export const deleteNotifiactions = (habit: Habit, callback?: () => void) => {
+  // habit.notificatiions.forEach((id) => {
+  //   LocalNotifications.cancel(habit.id * 10 + id)
+  // })
+  for (let i = 0; i < 7; i++) {
+    LocalNotifications.cancel(habit.id * 10 + i)
+    .then(() => {
+     if (i === 6 && callback) {
+       callback();
+     }
+    })
+  }
 }
 
 export const deleteHabit = (habit: Habit): ThunkResult<Promise<void>> =>

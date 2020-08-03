@@ -15,7 +15,12 @@ export default function auth(state=initialState, action: RootAction): typeof ini
       return [...action.habits]
 
     case (ActionType.DELETE_HABIT):
-      const newHabits = state.filter((habit) => habit.id !== action.habit.id)
+      const newHabits = state.map((habit) => {
+        if (habit.id === action.habit.id){
+          habit.deleted = true
+        }
+        return habit;
+      })
       return newHabits
 
     case (ActionType.UPDATE_HABIT):

@@ -9,6 +9,7 @@ export interface Habit {
   datesCompleted: number[];
   dateCreated: number;
   weekdays: number[];
+  deleted: boolean;
 }
 
 export type Habits  = Habit[]
