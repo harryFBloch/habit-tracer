@@ -76,10 +76,10 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
     return (
     <IonItemSliding key={habit.id}>
       <IonItemOptions side="end">
-        <IonItemOption onClick={() => deleteHabit(habit)}>
+        <IonItemOption onClick={() => deleteHabit(habit)} color="secondary">
           <IonIcon slot="icon-only" icon={trashBinOutline}/>
         </IonItemOption>
-        <IonItemOption routerLink={`edit_habit/${habit.id}`} routerDirection="none">
+        <IonItemOption routerLink={`edit_habit/${habit.id}`} routerDirection="none" color="secondary">
             <IonIcon slot="icon-only" icon={hammerOutline} onClick={closeList}/>
         </IonItemOption>
       </IonItemOptions>
@@ -87,7 +87,8 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
       <IonItemOptions side="start">
 
      {!completedToday &&
-        <IonItemOption onClick={() => {
+        <IonItemOption color="secondary"
+        onClick={() => {
           completeHabit(habit);
           closeList();
           }}>
@@ -95,16 +96,17 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
         </IonItemOption>}
 
       {completedToday && 
-        <IonItemOption onClick={() => {
+        <IonItemOption color="secondary" 
+        onClick={() => {
           unCompleteHabit(habit)
           closeList();
           }}>
-            <IonIcon color="danger" slot="icon-only" icon={arrowUndoCircle}/>
+            <IonIcon slot="icon-only" icon={arrowUndoCircle}/>
         </IonItemOption>
       }
       </IonItemOptions>
 
-      <IonItem color={completedToday ? 'primary' : 'secondary'}>
+      <IonItem className={completedToday ? classes.lineThrough : ''} color="primary" lines="none">
         <IonLabel className="ion-text-center ion-text-bold" slot="start">
           {habit.title}
         </IonLabel>

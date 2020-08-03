@@ -4,7 +4,6 @@ export interface Habit {
   notificatiions: number[];
   time: string;
   title: string;
-  message: string;
   id: number;
   datesCompleted: number[];
   dateCreated: number;

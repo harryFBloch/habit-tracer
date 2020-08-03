@@ -1,7 +1,6 @@
-import React, { ReactElement, useEffect, useRef } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { IonMenu, IonToolbar, IonHeader, IonTitle, IonContent, IonButton } from '@ionic/react';
 import { connect } from 'react-redux';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css"
 import { bindActionCreators } from 'redux';
 import { RootState, ThunkDispatchType, actions, Stats } from '../store';
@@ -9,6 +8,7 @@ import classes from './LeftMenu.module.css';
 import { IAPProduct } from '@ionic-native/in-app-purchase-2';
 import Calendar from './common/Calendar';
 import { getFinishedDates, getAlmostFinishedDates } from '../utils/Dates';
+import { logout } from '../store/auth/actions';
 
 interface ReduxStateProps {
   stats: Stats;
@@ -47,19 +47,20 @@ export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stat
 
   const renderProducts = (product: IAPProduct): ReactElement => {
     return(
-      <IonButton className={classes.productButton} onClick={() => subscribe(product.id)} key={product.id}>
+      <IonButton className={classes.productButton} 
+        onClick={() => subscribe(product.id)} key={product.id} 
+        color="primary">
+
         {product.title} {product.price}/month
       </IonButton>
     )
   }
 
-  console.log('left menu render')
-
   return (
     <IonMenu side="start" menuId="left" contentId='main' color="secondary">
       <IonHeader>
         <IonToolbar color="secondary">
-          <IonTitle color="primary">Your Stats</IonTitle>
+          <IonTitle>Your Stats</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent color="secondary">
@@ -69,6 +70,7 @@ export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stat
         </div>
 
         {!removeAds && products[0] && renderProducts(products[0])}
+        <IonButton className={classes.productButton} onClick={logout}>Logout</IonButton>
       </IonContent>
     </IonMenu>
   )

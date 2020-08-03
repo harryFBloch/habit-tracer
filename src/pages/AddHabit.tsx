@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption, IonToggle } from '@ionic/react';
+import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonList } from '@ionic/react';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { connect } from 'react-redux';
 import classes from './AddHabit.module.css'
@@ -44,7 +44,6 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
   const [selectedTime, setSelectedTime] = useState('');
   const [weekdays, setWeekdays] = useState([0,1,2,3,4,5,6]);
   const [habitName, setHabitName] = useState('');
-  const [message, setMessage] = useState('');
   const [reminder, setReminder] = useState(true)
 
   useEffect(() => {
@@ -54,7 +53,6 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
       setSelectedTime(habit.time);
       setWeekdays(habit.weekdays);
       setHabitName(habit.title);
-      setMessage(habit.message);
     }
   }, [match, habits])
 
@@ -73,7 +71,6 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
 
   const resetState = (): void => {
     setHabitName('');
-    setMessage('');
     setWeekdays([0,1,2,3,4,5,6]);
     setSelectedTime('');
   }
@@ -84,7 +81,6 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
       title: habitName,
       id: match.params.habitID ? Number(match.params.habitID) : habits.length,
       time: selectedTime,
-      message: message,
       datesCompleted: [],
       dateCreated: Date.now(),
       weekdays: weekdays,
@@ -106,24 +102,18 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
       <Toolbar back/>
       <div className={classes.formContainer}>
         <div className={classes.border}>
-          <IonItem lines="full">
-            <IonLabel position="floating">Habit Name:</IonLabel>
-            <IonInput value={habitName} onIonChange={(e) => setHabitName(e.detail.value!)}/>
+          <IonItem lines="full" color="primary">
+            <IonInput value={habitName} placeholder="Habit Name:" onIonChange={(e) => setHabitName(e.detail.value!)}/>
           </IonItem>
 
-          <IonItem lines="full">
-            <IonLabel position="floating">Message:</IonLabel>
-            <IonInput value={message} onIonChange={(e) => setMessage(e.detail.value!)}/>
-          </IonItem>
-
-        <IonItem lines="full">
+        <IonItem lines="full" color="primary">
           <IonLabel slot="start">Set Reminder</IonLabel>
-          <IonToggle checked={reminder} onClick={() => setReminder(!reminder)} slot="end"/>
+          <IonToggle color="secondary" checked={reminder} onClick={() => setReminder(!reminder)} slot="end"/>
         </IonItem>
 
         {reminder &&
           <>
-            <IonItem className={classes.fullWidth} lines="full">
+            <IonItem className={classes.fullWidth} lines="full" color="primary">
               <IonLabel>Weekdays</IonLabel>
               <IonSelect value={weekdays} multiple={true} cancelText="Cancel" okText="Okay!" onIonChange={e => setWeekdays(e.detail.value)} selectedText="">
                 <IonSelectOption value={WEEKDAYS.Monday}>Monday</IonSelectOption>
@@ -136,7 +126,7 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
               </IonSelect>
             </IonItem>
 
-            <IonItem className={classes.fullWidth} lines="full">
+            <IonItem className={classes.fullWidth} lines="full" color="primary">
               <IonLabel>Reminder Time</IonLabel>
               <IonDatetime displayFormat="h:mm A" cancelText="Remove Reminder"
               value={selectedTime} onIonChange={e => setSelectedTime(e.detail.value!)} 
@@ -146,7 +136,7 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
         }
         </div>
         <IonButton onClick={handleSaveHabit} className={classes.saveButton} routerLink="/home" routerDirection="none"
-          disabled={ title === '' || message === '' || (reminder && (weekdays.length === 0 || selectedTime === ''))} >
+          disabled={ title === '' || (reminder && (weekdays.length === 0 || selectedTime === ''))} >
           Save
         </IonButton>
       </div>

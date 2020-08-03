@@ -83,7 +83,6 @@ async ( dispatch: ThunkDispatchType ): Promise<void> => {
   .catch((error): void => console.log("Error", error))
 };
 
-export const logout = (): ThunkResult<Promise<void>> =>
-async ( dispatch: ThunkDispatchType): Promise<void> => {
+export const logout = () => {
   firebase.auth().signOut();
 }
