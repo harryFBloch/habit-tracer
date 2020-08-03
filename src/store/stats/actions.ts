@@ -1,10 +1,17 @@
 import { ThunkResult, ThunkDispatchType } from "../types";
 import firebase from '../../config/FirebaseConfig';
 import 'firebase/database';
-import { UniqueDeviceID } from "@ionic-native/unique-device-id";
 import { ActionType } from "../actionTypes";
 import { RootState } from "..";
 import { Stats, StatsTemplate } from "./types";
+import { Habits } from "../habits/types";
+
+const calculateHabitCount = (habits: Habits): number => {
+  let count = 0;
+
+  Object.keys(habits).forEach((key) => !habits[key].deleted && count++)
+  return count
+}
 
 export const getStats = (): ThunkResult<Promise<void>> =>
   async ( dispatch: ThunkDispatchType, getState: () => RootState): Promise<void> => {
@@ -16,12 +23,11 @@ export const getStats = (): ThunkResult<Promise<void>> =>
       if (!stats.val() || !stats.val()[today]) {
         //stats for today does not exist create one
         const newStats = {...StatsTemplate}
-        todayStats = {habitCount: getState().habits.length, habitsCompleted: 0}
+        todayStats = {habitCount: calculateHabitCount(getState().habits), habitsCompleted: 0}
         newStats.stats[today] = todayStats
         newStats.today = todayStats
-        console.log('newStats', newStats)
         firebase.database().ref(`/stats/${getState().auth.uid}/${today}`)
-          .set({habitCount: getState().habits.length, habitsCompleted: 0})
+          .set({habitCount: Object.keys(getState().habits).length, habitsCompleted: 0})
           dispatch({ type: ActionType.GET_STATS, stats: newStats.stats})
       } else {
         todayStats = stats.val()[today]

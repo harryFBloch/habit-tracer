@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
 import {InAppPurchase2, IAPProduct, IAPProducts} from '@ionic-native/in-app-purchase-2';
-import { InAppPurchase } from '@ionic-native/in-app-purchase'
 import { connect } from 'react-redux';
 import { RootState, ThunkDispatchType, actions } from "../../store";
 import { bindActionCreators } from "redux";
@@ -52,7 +51,7 @@ export const InAppPurchaseContainer = ({ getProducts, removeAds }: Props): React
      .verified((p: IAPProduct) => p.finish())
      .owned((p: IAPProduct) => {
       if (p.owned) {
-        console.log('remove ads')
+        removeAds();
       }
      });
 

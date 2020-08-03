@@ -61,7 +61,7 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
       const timeArray = selectedTime.split('T')[1].split(':')
         if (timeArray) {
           LocalNotifications.schedule({
-            id: habits.length * 10 + weekday,
+            id: Object.keys(habits).length * 10 + weekday,
             title: `TIME TO ${habitName}`,
             trigger: {every: { weekday: weekday, hour: Number(timeArray[0]), minute: Number(timeArray[1])}, count: 365}
           })
@@ -79,7 +79,7 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
     const habit: Habit = {
       notificatiions: weekdays,
       title: habitName,
-      id: match.params.habitID ? Number(match.params.habitID) : habits.length,
+      id: match.params.habitID ? match.params.habitID : String(Object.keys(habits).length),
       time: selectedTime,
       datesCompleted: [],
       dateCreated: Date.now(),

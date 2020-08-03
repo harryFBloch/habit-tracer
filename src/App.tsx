@@ -21,11 +21,12 @@ import { Provider } from 'react-redux';
 import store, { actions } from './store';
 import LeftMenu  from './components/LeftMenu';
 import AdMobContainer from './components/common/AdMobContainer';
-import InterAd from './components/common/InterAd';
 import InAppPurchase from './components/common/InAppPurchase';
 import { PublicRoute, PrivateRoute} from './utils/routing';
 import Login from './pages/Login';
 import './App.css'
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
 
 const App: React.FC = () => {
@@ -49,7 +50,6 @@ const App: React.FC = () => {
       <IonReactRouter>
       <IonContent id="main" forceOverscroll={false}>
         <AdMobContainer />
-        {/* <InterAd /> */}
         <InAppPurchase />
         <LeftMenu />
         <IonRouterOutlet id="main">
@@ -57,6 +57,8 @@ const App: React.FC = () => {
           <PrivateRoute path="/add_habit" component={AddHabit} exact={true} />
           <PrivateRoute path="/edit_habit/:habitID" component={AddHabit} />
           <PublicRoute path="/login" component={Login} />
+          <PublicRoute path="/terms" component={Terms} />
+          <PublicRoute path="/privacy" component={Privacy} />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
         </IonRouterOutlet>
         </IonContent>

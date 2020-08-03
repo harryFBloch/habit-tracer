@@ -48,7 +48,6 @@ export const AdMobContainer = ({removeAds}: Props): ReactElement => {
         adSize: AdSize.FLUID,
         position: AdPosition.BOTTOM_CENTER,
         margin: 0,
-        isTesting: true,
       }
 
       AdMob.showBanner(bannerOptions)

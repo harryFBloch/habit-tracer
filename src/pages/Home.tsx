@@ -5,7 +5,7 @@ import { RootState, ThunkDispatchType, Habits, actions, Habit } from '../store';
 import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import {checkmarkCircle, hammerOutline, trashBinOutline, arrowUndoCircle, addOutline, time} from 'ionicons/icons';
+import {checkmarkCircle, hammerOutline, trashBinOutline, arrowUndoCircle, addOutline} from 'ionicons/icons';
 import Toolbar from '../components/common/Toolbar';
 import { randomQuote } from '../quotes';
 
@@ -24,6 +24,7 @@ interface ReduxDispatchProps {
   getStats: () => Promise<void>;
   completeHabit: (habit: Habit) => Promise<void>;
   unCompleteHabit: (habit: Habit) => Promise<void>;
+  showInter: () => Promise<void>;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => bindActionCreators({
@@ -32,17 +33,20 @@ const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => 
   getStats: actions.stats.getStats,
   completeHabit: actions.habits.completeHabit,
   unCompleteHabit: actions.habits.unCompleteHabit,
+  showInter: actions.flags.showInterAd,
 }, dispatch);
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps
 
-const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unCompleteHabit}: Props): ReactElement => {
+const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unCompleteHabit, showInter}: Props): ReactElement => {
 
   const [quote, setQuote] = useState({author: '', quote: ''})
 
   useEffect(() => {
     getHabits()
-    getStats()
+    .then(() => {
+      getStats()
+    })
     setQuote(randomQuote())
   }, [getHabits, getStats])
 
@@ -69,6 +73,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
 
     let completedToday = false
 
+    //check if completed
     if (habit.datesCompleted && habit.datesCompleted.length > 0) {
       completedToday = datesAreOnSameDay(new Date(habit.datesCompleted[habit.datesCompleted.length - 1]), new Date())
     }
@@ -91,6 +96,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
         onClick={() => {
           completeHabit(habit);
           closeList();
+          showInter();
           }}>
             <IonIcon slot="icon-only" icon={checkmarkCircle}/>
         </IonItemOption>}
@@ -98,7 +104,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
       {completedToday && 
         <IonItemOption color="secondary" 
         onClick={() => {
-          unCompleteHabit(habit)
+          unCompleteHabit(habit);
           closeList();
           }}>
             <IonIcon slot="icon-only" icon={arrowUndoCircle}/>
@@ -120,7 +126,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
     )
   }
 
-  const sortedHabits = habits.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+  const sortedHabitKeys = Object.keys(habits).sort((a, b) => new Date(habits[a].time).getTime() - new Date(habits[b].time).getTime())
   
   return (
     <IonPage>
@@ -138,12 +144,12 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
             </div>
           </div>
         </div>
-        {habits && habits.length > 0 &&
+        {habits && Object.keys(habits).length > 0 &&
           <IonList ref={listRef} className={classes.listContainer}>  
-            {sortedHabits.map((habit) => !habit.deleted && renderHabit(habit))}
+            {sortedHabitKeys.map((id) => !habits[id].deleted && renderHabit(habits[id]))}
           </IonList>
         }
-        {habits.length === 0 &&
+        {Object.keys(habits).length === 0 &&
           <IonButton color="primary" className={classes.button} routerLink="/add_habit" routerDirection="none">
             Add New Habbit
           </IonButton>

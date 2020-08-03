@@ -18,7 +18,6 @@ const platformID = isPlatform('android') ? addID.android : addID.ios;
 
 const options: AdOptions = {
   adId: platformID,
-  isTesting: true,
 }
 
 export const showInterAd = (): ThunkResult<Promise<void>> =>

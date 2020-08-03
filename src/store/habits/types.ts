@@ -4,14 +4,14 @@ export interface Habit {
   notificatiions: number[];
   time: string;
   title: string;
-  id: number;
+  id: string;
   datesCompleted: number[];
   dateCreated: number;
   weekdays: number[];
   deleted: boolean;
 }
 
-export type Habits  = Habit[]
+export type Habits = {[id: string]: Habit}
 
 
 export enum WEEKDAYS {
