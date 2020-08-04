@@ -55,3 +55,8 @@ export const removeAds = (): ThunkResult<Promise<void>> =>
   async ( dispatch: ThunkDispatchType): Promise<void> => {
     dispatch({type: ActionType.REMOVE_ADS});
 }
+
+export const restorePurchase = (): ThunkResult<Promise<void>> =>
+  async ( dispatch: ThunkDispatchType): Promise<void> => {
+    InAppPurchase2.refresh()
+}

@@ -14,7 +14,7 @@ const mapStateToProps = (state: RootState): ReduxStateProps => ({
 
 interface ReduxDispatchProps {
   getProducts: (products: IAPProducts) => Promise<void>;
-  removeAds: () => Promise<void>
+  removeAds: () => Promise<void>;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => bindActionCreators({
@@ -52,6 +52,7 @@ export const InAppPurchaseContainer = ({ getProducts, removeAds }: Props): React
      .owned((p: IAPProduct) => {
       if (p.owned) {
         removeAds();
+        console.log('purchase complete')
       }
      });
 

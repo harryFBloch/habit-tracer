@@ -26,16 +26,18 @@ const mapStateToProps = (state: RootState): ReduxStateProps => ({
 interface ReduxDispatchProps {
   subscribe: (productID: string) => Promise<void>;
   initializeInter: () => Promise<void>;
+  restorePurchase: () => Promise<void>;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => bindActionCreators({
   subscribe: actions.flags.subscribe,
   initializeInter: actions.flags.initializeInter,
+  restorePurchase: actions.flags.restorePurchase,
 }, dispatch);
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
 
-export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stats }: Props): ReactElement => {
+export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stats, restorePurchase }: Props): ReactElement => {
 
   const handleInitializeAd = () => {
     initializeInter()
@@ -70,6 +72,9 @@ export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stat
         </div>
 
         {!removeAds && products[0] && renderProducts(products[0])}
+        
+        <IonButton onClick={restorePurchase}>Restore Purchases</IonButton>
+        
         <IonButton className={classes.productButton} onClick={logout}>Logout</IonButton>
       </IonContent>
     </IonMenu>
