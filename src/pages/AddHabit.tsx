@@ -1,5 +1,7 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonList } from '@ionic/react';
+import firebase from '../config/FirebaseConfig';
+import 'firebase/analytics';
+import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonList, IonContent } from '@ionic/react';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { connect } from 'react-redux';
 import classes from './AddHabit.module.css'
@@ -95,51 +97,55 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
     match.params.habitID ? updateHabit(habit) : addNewHabit(habit);
     showInterstitional();
     resetState();
+    firebase.analytics().logEvent('save or update habit')
   }
 
   return (
     <IonPage>
       <Toolbar back/>
-      <div className={classes.formContainer}>
-        <div className={classes.border}>
+      <IonContent>
+
+        <div className={classes.formContainer}>
+          <div className={classes.border}>
+            <IonItem lines="full" color="primary">
+              <IonInput value={habitName} placeholder="Habit Name:" onIonChange={(e) => setHabitName(e.detail.value!)}/>
+            </IonItem>
+
           <IonItem lines="full" color="primary">
-            <IonInput value={habitName} placeholder="Habit Name:" onIonChange={(e) => setHabitName(e.detail.value!)}/>
+            <IonLabel slot="start">Set Reminder</IonLabel>
+            <IonToggle color="secondary" checked={reminder} onClick={() => setReminder(!reminder)} slot="end"/>
           </IonItem>
 
-        <IonItem lines="full" color="primary">
-          <IonLabel slot="start">Set Reminder</IonLabel>
-          <IonToggle color="secondary" checked={reminder} onClick={() => setReminder(!reminder)} slot="end"/>
-        </IonItem>
+          {reminder &&
+            <>
+              <IonItem className={classes.fullWidth} lines="full" color="primary">
+                <IonLabel>Weekdays</IonLabel>
+                <IonSelect value={weekdays} multiple={true} cancelText="Cancel" okText="Okay!" onIonChange={e => setWeekdays(e.detail.value)} selectedText="">
+                  <IonSelectOption value={WEEKDAYS.Monday}>Monday</IonSelectOption>
+                  <IonSelectOption value={WEEKDAYS.Tuesday}>Tuesday</IonSelectOption>
+                  <IonSelectOption value={WEEKDAYS.Wednesday}>Wednesday</IonSelectOption>
+                  <IonSelectOption value={WEEKDAYS.Thursday}>Thursday</IonSelectOption>
+                  <IonSelectOption value={WEEKDAYS.Friday}>Friday</IonSelectOption>
+                  <IonSelectOption value={WEEKDAYS.Saterday}>Saturday</IonSelectOption>
+                  <IonSelectOption value={WEEKDAYS.Sunday}>Sunday</IonSelectOption>
+                </IonSelect>
+              </IonItem>
 
-        {reminder &&
-          <>
-            <IonItem className={classes.fullWidth} lines="full" color="primary">
-              <IonLabel>Weekdays</IonLabel>
-              <IonSelect value={weekdays} multiple={true} cancelText="Cancel" okText="Okay!" onIonChange={e => setWeekdays(e.detail.value)} selectedText="">
-                <IonSelectOption value={WEEKDAYS.Monday}>Monday</IonSelectOption>
-                <IonSelectOption value={WEEKDAYS.Tuesday}>Tuesday</IonSelectOption>
-                <IonSelectOption value={WEEKDAYS.Wednesday}>Wednesday</IonSelectOption>
-                <IonSelectOption value={WEEKDAYS.Thursday}>Thursday</IonSelectOption>
-                <IonSelectOption value={WEEKDAYS.Friday}>Friday</IonSelectOption>
-                <IonSelectOption value={WEEKDAYS.Saterday}>Saturday</IonSelectOption>
-                <IonSelectOption value={WEEKDAYS.Sunday}>Sunday</IonSelectOption>
-              </IonSelect>
-            </IonItem>
-
-            <IonItem className={classes.fullWidth} lines="full" color="primary">
-              <IonLabel>Reminder Time</IonLabel>
-              <IonDatetime displayFormat="h:mm A" cancelText="Remove Reminder"
-              value={selectedTime} onIonChange={e => setSelectedTime(e.detail.value!)} 
-              onIonCancel={() => setSelectedTime('')}/>
-            </IonItem>
-          </>
-        }
+              <IonItem className={classes.fullWidth} lines="full" color="primary">
+                <IonLabel>Reminder Time</IonLabel>
+                <IonDatetime displayFormat="h:mm A" cancelText="Remove Reminder"
+                value={selectedTime} onIonChange={e => setSelectedTime(e.detail.value!)} 
+                onIonCancel={() => setSelectedTime('')}/>
+              </IonItem>
+            </>
+          }
+          </div>
+          <IonButton onClick={handleSaveHabit} className={classes.saveButton} routerLink="/home" routerDirection="none"
+            disabled={ title === '' || (reminder && (weekdays.length === 0 || selectedTime === ''))} >
+            Save
+          </IonButton>
         </div>
-        <IonButton onClick={handleSaveHabit} className={classes.saveButton} routerLink="/home" routerDirection="none"
-          disabled={ title === '' || (reminder && (weekdays.length === 0 || selectedTime === ''))} >
-          Save
-        </IonButton>
-      </div>
+      </IonContent>
     </IonPage>
   )
 }

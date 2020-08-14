@@ -1,6 +1,9 @@
 .pageContainer {
   align-items: center;
-  padding-top: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .formContainer {

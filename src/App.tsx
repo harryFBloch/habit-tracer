@@ -4,6 +4,7 @@ import { IonApp, IonRouterOutlet, IonContent } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import firebase from './config/FirebaseConfig';
 import 'firebase/auth';
+import 'firebase/analytics';
 import Home from './pages/Home';
 
 /* Core CSS required for Ionic components to work properly */
@@ -27,10 +28,12 @@ import Login from './pages/Login';
 import './App.css'
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import Onboarding from './pages/Onboarding';
 
 
 const App: React.FC = () => {
   useEffect((): void => {
+    firebase.analytics()
     //check auth status
     firebase.auth().onAuthStateChanged((user): void => {
       if (user) {
@@ -48,7 +51,6 @@ const App: React.FC = () => {
   <Provider store={store}>
     <IonApp>
       <IonReactRouter>
-      <IonContent id="main" forceOverscroll={false}>
         <AdMobContainer />
         <InAppPurchase />
         <LeftMenu />
@@ -56,12 +58,12 @@ const App: React.FC = () => {
           <PrivateRoute path="/home" component={Home} exact={true} />
           <PrivateRoute path="/add_habit" component={AddHabit} exact={true} />
           <PrivateRoute path="/edit_habit/:habitID" component={AddHabit} />
+          <PrivateRoute path="/onboarding" component={Onboarding} exact={true} />
           <PublicRoute path="/login" component={Login} />
           <PublicRoute path="/terms" component={Terms} />
           <PublicRoute path="/privacy" component={Privacy} />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
         </IonRouterOutlet>
-        </IonContent>
       </IonReactRouter>
     </IonApp>
   </Provider>

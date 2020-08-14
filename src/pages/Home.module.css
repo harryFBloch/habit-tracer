@@ -10,10 +10,10 @@
 
 .listContainer {
   margin-top: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   padding: 16px;
-  border: var(--ion-color-primary) solid 3px;
-  border-radius: 25px;
+  max-height: 50%;
+  overflow-y: auto;
 }
 
 .timeLabel {
@@ -49,4 +49,13 @@
 
 .lineThrough {
   text-decoration: line-through;
+}
+
+.productButton {
+  white-space: pre-wrap;
+}
+
+.buttonContainer {
+  width: 100%;
+  padding: 16px;
 }

@@ -52,8 +52,7 @@ export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stat
       <IonButton className={classes.productButton} 
         onClick={() => subscribe(product.id)} key={product.id} 
         color="primary">
-
-        {product.title} {product.price}/month
+        {product.title} {product.price}/{product.billingPeriodUnit}
       </IonButton>
     )
   }
@@ -73,7 +72,7 @@ export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stat
 
         {!removeAds && products[0] && renderProducts(products[0])}
         
-        <IonButton onClick={restorePurchase}>Restore Purchases</IonButton>
+        <IonButton className={classes.productButton} onClick={restorePurchase}>Restore Purchases</IonButton>
         
         <IonButton className={classes.productButton} onClick={logout}>Logout</IonButton>
       </IonContent>

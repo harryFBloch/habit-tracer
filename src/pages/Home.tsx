@@ -1,27 +1,39 @@
-import { IonPage, IonButton, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption, IonIcon, IonList, IonText } from '@ionic/react';
+import { IonPage, IonButton, IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption, IonIcon, IonList, IonText, IonContent } from '@ionic/react';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import firebase from '../config/FirebaseConfig';
+import 'firebase/analytics';
 import classes from './Home.module.css';
-import { RootState, ThunkDispatchType, Habits, actions, Habit } from '../store';
+import { RootState, ThunkDispatchType, Habits, actions, Habit, Stat } from '../store';
 import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import {checkmarkCircle, hammerOutline, trashBinOutline, arrowUndoCircle, addOutline} from 'ionicons/icons';
 import Toolbar from '../components/common/Toolbar';
 import { randomQuote } from '../quotes';
+import { IAPProduct } from '@ionic-native/in-app-purchase-2';
+import { subscribe } from '../store/flags/actions';
+import LineGraph from '../components/common/LineGraph';
+import { getHabitsCompleteData } from '../utils/Dates';
 
 interface ReduxStateProps {
   habits: Habits;
+  removeAds: boolean;
+  products: IAPProduct[];
+  stats: Stat;
 };
 
 const mapStateToProps = (state: RootState): ReduxStateProps => ({
-  habits: state.habits
+  habits: state.habits,
+  removeAds: state.flags.removeAds,
+  products: state.flags.products,
+  stats: state.stats.stats,
 });
 
 // Need to define types here because it won't infer properly from ThunkResult right now
 interface ReduxDispatchProps {
   getHabits: () => Promise<void>;
   deleteHabit: (habit: Habit) => Promise<void>;
-  getStats: () => Promise<void>;
+  getStats: () => Promise<boolean>;
   completeHabit: (habit: Habit) => Promise<void>;
   unCompleteHabit: (habit: Habit) => Promise<void>;
   showInter: () => Promise<void>;
@@ -38,7 +50,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => 
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps
 
-const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unCompleteHabit, showInter}: Props): ReactElement => {
+const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unCompleteHabit, showInter, removeAds, products, stats, history}: Props): ReactElement => {
 
   const [quote, setQuote] = useState({author: '', quote: ''})
 
@@ -46,6 +58,11 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
     getHabits()
     .then(() => {
       getStats()
+      .then((firstLogin) => {
+        if (firstLogin) {
+          history.push('/onboarding')
+        }
+      })
     })
     setQuote(randomQuote())
   }, [getHabits, getStats])
@@ -97,6 +114,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
           completeHabit(habit);
           closeList();
           showInter();
+          firebase.analytics().logEvent('habit complete for the day')
           }}>
             <IonIcon slot="icon-only" icon={checkmarkCircle}/>
         </IonItemOption>}
@@ -130,31 +148,47 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
   
   return (
     <IonPage>
-      <Toolbar rightButtons={<IonButton routerLink="/add_habit" routerDirection="none">
+      <Toolbar rightButtons={<IonButton routerLink="/onboarding" routerDirection="none">
           <IonIcon slot="icon-only" icon={addOutline}/>
         </IonButton>}/>
-      <div className={classes.pageContainer}>
-        <div className={classes.quoteContainr}>
-          <div className={classes.quoteInnerContainer}>
-            <div className={classes.quote}>
-              {quote.quote}
-            </div>
-            <div className={classes.quoteAuthor}>
-              {quote.author}
+      <IonContent>
+        <div className={classes.pageContainer}>
+          <div className={classes.quoteContainr}>
+            <div className={classes.quoteInnerContainer}>
+              <div className={classes.quote}>
+                {quote.quote}
+              </div>
+              <div className={classes.quoteAuthor}>
+                {quote.author}
+              </div>
             </div>
           </div>
+          {habits && Object.keys(habits).length > 0 &&
+            <IonList ref={listRef} className={classes.listContainer}>  
+              {sortedHabitKeys.map((id) => !habits[id].deleted && renderHabit(habits[id]))}
+            </IonList>
+          }
+          {Object.keys(habits).length === 0 &&
+            <IonButton color="primary" className={classes.button} routerLink="/add_habit" routerDirection="none">
+              Add New Habbit
+            </IonButton>
+          }
+          {Object.keys(stats).length > 1 &&
+            <div className={classes.graphContainer}>
+            <LineGraph title="" data={{Habits: {data: getHabitsCompleteData(stats), color: '#D08A4A'}}} fill={true}/>
+          </div>}
+
+          <div className={classes.buttonContainer}>
+            {products[0] && !removeAds &&
+              <IonButton className={classes.productButton}
+                onClick={() => subscribe(products[0].id)} key={products[0].id} 
+                color="primary">
+                Click Here to {products[0].title} For Only {products[0].price} a {products[0].billingPeriodUnit}
+              </IonButton>
+            }
+            </div>
         </div>
-        {habits && Object.keys(habits).length > 0 &&
-          <IonList ref={listRef} className={classes.listContainer}>  
-            {sortedHabitKeys.map((id) => !habits[id].deleted && renderHabit(habits[id]))}
-          </IonList>
-        }
-        {Object.keys(habits).length === 0 &&
-          <IonButton color="primary" className={classes.button} routerLink="/add_habit" routerDirection="none">
-            Add New Habbit
-          </IonButton>
-        }
-      </div>
+      </IonContent>
     </IonPage>
   );
 };

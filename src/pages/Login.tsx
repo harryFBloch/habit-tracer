@@ -8,6 +8,7 @@ import {
   IonPage,
   IonButton,
   IonAlert,
+  IonContent,
 } from '@ionic/react';
 import classes from './Login.module.css'
 import { ThunkDispatchType, actions } from '../store';
@@ -135,40 +136,45 @@ export const Login = ({history, login, signUp, resetPassword}: RouteComponentPro
   )
 
   return (
-    <IonPage className={classes.pageContainer}>
-      <div className={classes.formContainer}>
-      {loginMode ? renderLogin() : renderSignUp()}
-      <h5 className={classes.errorNote}>{errorMessage}</h5>
-      </div>
-      <IonAlert
-          isOpen={forgotPassword}
-          onDidDismiss={() => setForgotPassword(false)}
-          cssClass='my-custom-class'
-          header={'Enter your email to recieve a forgot password link'}
-          inputs={[
-            {
-              name: 'email',
-              type: 'text',
-            },
-            
-          ]}
-          buttons={[
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: () => {
-                console.log('Confirm Cancel');
-              }
-            },
-            {
-              text: 'Ok',
-              handler: (value) => {
-                resetPassword(value.email)
-              }
-            }
-          ]}
-        />
+    <IonPage >
+      <IonContent>
+        <div className={classes.pageContainer}>
+
+          <div className={classes.formContainer}>
+          {loginMode ? renderLogin() : renderSignUp()}
+          <h5 className={classes.errorNote}>{errorMessage}</h5>
+          </div>
+          <IonAlert
+              isOpen={forgotPassword}
+              onDidDismiss={() => setForgotPassword(false)}
+              cssClass='my-custom-class'
+              header={'Enter your email to recieve a forgot password link'}
+              inputs={[
+                {
+                  name: 'email',
+                  type: 'text',
+                },
+                
+              ]}
+              buttons={[
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: () => {
+                    console.log('Confirm Cancel');
+                  }
+                },
+                {
+                  text: 'Ok',
+                  handler: (value) => {
+                    resetPassword(value.email)
+                  }
+                }
+              ]}
+            />
+        </div>
+      </IonContent>
     </IonPage>
   )
 }

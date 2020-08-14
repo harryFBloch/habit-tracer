@@ -32,8 +32,6 @@ export const AdMobContainer = ({removeAds}: Props): ReactElement => {
   useEffect(() => {
     if (!removeAds) {
       AdMob.initialize();
-    
-
       const addID = {
         ios: AdMobBannerIOS,
         iosInter: AdMobIntersitionalIOS, 
