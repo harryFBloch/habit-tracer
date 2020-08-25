@@ -11,7 +11,6 @@ import {checkmarkCircle, hammerOutline, trashBinOutline, arrowUndoCircle, addOut
 import Toolbar from '../components/common/Toolbar';
 import { randomQuote } from '../quotes';
 import { IAPProduct } from '@ionic-native/in-app-purchase-2';
-import { subscribe } from '../store/flags/actions';
 import LineGraph from '../components/common/LineGraph';
 import { getHabitsCompleteData } from '../utils/Dates';
 
@@ -37,6 +36,7 @@ interface ReduxDispatchProps {
   completeHabit: (habit: Habit) => Promise<void>;
   unCompleteHabit: (habit: Habit) => Promise<void>;
   showInter: () => Promise<void>;
+  subscribe: (productID: string) => Promise<void>;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => bindActionCreators({
@@ -46,11 +46,12 @@ const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => 
   completeHabit: actions.habits.completeHabit,
   unCompleteHabit: actions.habits.unCompleteHabit,
   showInter: actions.flags.showInterAd,
+  subscribe: actions.flags.subscribe
 }, dispatch);
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps
 
-const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unCompleteHabit, showInter, removeAds, products, stats, history}: Props): ReactElement => {
+const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unCompleteHabit, showInter, removeAds, products, stats, history, subscribe}: Props): ReactElement => {
 
   const [quote, setQuote] = useState({author: '', quote: ''})
 
@@ -148,7 +149,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
   
   return (
     <IonPage>
-      <Toolbar rightButtons={<IonButton routerLink="/onboarding" routerDirection="none">
+      <Toolbar rightButtons={<IonButton routerLink="/add_habit" routerDirection="none">
           <IonIcon slot="icon-only" icon={addOutline}/>
         </IonButton>}/>
       <IonContent>
