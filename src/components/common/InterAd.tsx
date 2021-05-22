@@ -38,7 +38,6 @@ export const InterAd = ({ closeInterAd, showInterAd}: Props): ReactElement => {
 
   const options: AdOptions = {
     adId: platformID,
-    isTesting: true,
   }
 
   useEffect(() => {

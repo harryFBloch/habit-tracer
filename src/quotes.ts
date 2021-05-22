@@ -34,3 +34,20 @@ export const quotes = [
 export const randomQuote = (): {author: string, quote: string} => {
   return quotes[Math.floor(Math.random() * quotes.length)]
 }
+
+export const shortQuotes = [
+  "You can totally do this",
+  "Don’t tell people your plans. Show them your results.",
+  "No pressure, no diamonds",
+  "Stay foolish to stay sane.",
+  "When nothing goes right, go left",
+  "Try Again. Fail again. Fail better",
+  "Impossible is for the unwilling",
+  "I can and I will",
+  "Prove them wrong",
+  "And so the adventure begins",
+];
+
+export const randomShortQuote = (): string => {
+  return shortQuotes[Math.floor(Math.random() * shortQuotes.length)]
+}

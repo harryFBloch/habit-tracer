@@ -10,11 +10,15 @@ import { ThunkDispatchType, RootState } from '../../store';
 const { AdMob } = Plugins;
 
 interface ReduxStateProps {
-  removeAds: boolean
+  removeAds: boolean;
+  pauseAds: boolean;
+  loggedIn: string;
 };
 
 const mapStateToProps = (state: RootState): ReduxStateProps => ({
-  removeAds: state.flags.removeAds
+  removeAds: state.flags.removeAds,
+  pauseAds: state.flags.pauseAds,
+  loggedIn: state.auth.uid
 });
 
 // Need to define types here because it won't infer properly from ThunkResult right now
@@ -24,13 +28,17 @@ interface ReduxDispatchProps {
 const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => bindActionCreators({
 }, dispatch);
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
+interface parrentProps {
+  top: boolean
+}
+
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & parrentProps
 
 
-export const AdMobContainer = ({removeAds}: Props): ReactElement => {
+export const AdMobContainer = ({removeAds, top, pauseAds, loggedIn}: Props): ReactElement => {
 
   useEffect(() => {
-    if (!removeAds) {
+    if (!removeAds && !pauseAds && loggedIn) {
       AdMob.initialize();
       const addID = {
         ios: AdMobBannerIOS,
@@ -53,7 +61,7 @@ export const AdMobContainer = ({removeAds}: Props): ReactElement => {
       AdMob.hideBanner()
     }
   
-  }, [removeAds])
+  }, [removeAds, pauseAds])
 
   return (<></>)
 }

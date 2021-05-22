@@ -6,7 +6,9 @@ import { IAPProduct } from '@ionic-native/in-app-purchase-2';
 const initialState: Flags = {
   showInterAd: false,
   products: [] as IAPProduct[],
-  removeAds: false
+  removeAds: false,
+  pauseAds: false,
+  premium: false,
 };
 
 export default function auth(state=initialState, action: RootAction): typeof initialState  {
@@ -23,6 +25,12 @@ export default function auth(state=initialState, action: RootAction): typeof ini
 
     case (ActionType.REMOVE_ADS):
       return {...state, removeAds: true}
+    
+    case (ActionType.TOGGLE_PAUSE_ADS):
+      return {...state, pauseAds: !state.pauseAds}
+
+    case (ActionType.UPGRADE_PREMIUM):
+      return {...state, removeAds: true, premium: true}
 
     default:
       return state;

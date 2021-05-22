@@ -37,3 +37,27 @@ export const getHabitsCompleteData = (stats: Stat): {t: Date, y: number}[] => {
     return {t: date.date, y: date.habitsCompleted}
   })
 }
+
+export const getTodaysPercentage = (stats: Stat): number => {
+  if(Object.keys(stats).length > 0) {
+    const now = new Date();
+    const todayString = `${now.getMonth()}-${now.getDate()}-${now.getFullYear()}`
+    const todayStats = stats[todayString];
+    return Math.trunc(todayStats.habitsCompleted / todayStats.habitCount * 100)
+  }
+  return 0
+}
+
+export const getTotalHabitsCompleted = (stats: Stat): {total: number, completedTotal: number} => {
+  let total = 0
+  let completedTotal = 0
+  Object.keys(stats).map(key => {
+    total += stats[key].habitCount
+    completedTotal += stats[key].habitsCompleted
+  })
+  return {total: total, completedTotal: completedTotal};
+}
+
+export const getDateString = (date: Date): string => {
+  return `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`;
+}

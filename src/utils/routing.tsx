@@ -39,12 +39,12 @@ class Private extends Component<Props> {
         // return <Redirect to={{pathname: '/login', state: {from: props.location}}}/>;
         // return <Login from={props.location}/>;
         // There seems to be a bug where a redirect to login is still getting to this point.
-        if (props.location.pathname !== PAGE_URL.LOGIN) {
+        if (props.location.pathname !== '/onboarding') {
           // TODO: This should be more properly done. Having a manual redirect like this
           // blows the app state away, but without it Home won't render properly in 
           // the case of log out / log back in
-          window.location.href = PAGE_URL.LOGIN;
-          return <Redirect to={{pathname: PAGE_URL.LOGIN, state: {from: props.location}}}/>;
+          window.location.href = '/onboarding';
+          return <Redirect to={{pathname: '/onboarding', state: {from: props.location}}}/>;
         } else {
           return <Login />;
         }

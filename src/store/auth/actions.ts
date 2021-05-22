@@ -2,6 +2,7 @@ import { ThunkResult, ThunkDispatchType } from '../types';
 import { ActionType } from '../actionTypes';
 import firebase from '../../config/FirebaseConfig';
 import 'firebase/database';
+
 import { RootState } from '..';
 
 export const signUp = (email: string, password: string): ThunkResult<Promise<void>> =>

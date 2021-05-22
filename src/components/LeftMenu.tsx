@@ -14,17 +14,19 @@ interface ReduxStateProps {
   stats: Stats;
   products: IAPProduct[];
   removeAds: boolean;
+  premium: boolean;
 };
 
 const mapStateToProps = (state: RootState): ReduxStateProps => ({
   stats: state.stats,
   products: state.flags.products,
   removeAds: state.flags.removeAds,
+  premium: state.flags.premium,
 });
 
 // Need to define types here because it won't infer properly from ThunkResult right now
 interface ReduxDispatchProps {
-  subscribe: (productID: string) => Promise<void>;
+  subscribe: (productID: string) => Promise<string>;
   initializeInter: () => Promise<void>;
   restorePurchase: () => Promise<void>;
 }
@@ -37,7 +39,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => 
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
 
-export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stats, restorePurchase }: Props): ReactElement => {
+export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stats, restorePurchase, premium }: Props): ReactElement => {
 
   const handleInitializeAd = () => {
     initializeInter()
@@ -70,7 +72,7 @@ export const LeftMenu = ({ initializeInter, products, subscribe, removeAds, stat
           <Calendar finishedDates={getFinishedDates(stats.stats)} almostFinishedDates={getAlmostFinishedDates(stats.stats)}/>
         </div>
 
-        {!removeAds && products[0] && renderProducts(products[0])}
+        {!removeAds && products[0] && !premium && renderProducts(products[0])}
         
         <IonButton className={classes.productButton} onClick={restorePurchase}>Restore Purchases</IonButton>
         

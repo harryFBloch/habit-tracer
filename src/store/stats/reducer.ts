@@ -4,7 +4,7 @@ import { RootAction } from "..";
 
 const initialState: Stats = {
   stats: {},
-  today: {habitCount: 0, habitsCompleted: 0}
+  today: {habitCount: 0, habitsCompleted: 0},
 };
 
 export default function stats(state=initialState, action: RootAction): typeof initialState  {

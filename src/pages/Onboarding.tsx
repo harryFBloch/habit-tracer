@@ -1,31 +1,96 @@
-import React, { ReactElement, useEffect } from 'react';
-import { IonPage, IonContent } from '@ionic/react';
-import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { IonPage, IonContent, IonSlides, IonSlide, IonButton } from '@ionic/react';
 import { RouteComponentProps } from 'react-router';
+import classes from './Onboarding.module.css';
+import Premium from '../components/common/Premium';
+import OBOne from '../images/OB1.jpeg';
+import OBTwo from '../images/OB2.jpeg';
+import OBThree from '../images/OB3.jpeg';
+import Login from './Login';
+import { RootState } from '../store';
+import { connect } from 'react-redux';
+
+interface ReduxStateProps {
+  premium: boolean;
+};
+
+const mapStateToProps = (state: RootState): ReduxStateProps => ({
+  premium: state.flags.premium,
+});
 
 
-export const Onboarding = ({ history }: RouteComponentProps): ReactElement => {
+export const Onboarding = ({ premium }: ReduxStateProps): ReactElement => {
 
-  let options: StreamingVideoOptions = {
-    successCallback: () => { history.push('home') },
-    errorCallback: () => { history.push('home') },
-    orientation: 'portrait',
-    shouldAutoClose: true,
-    controls: false,
-  };
-
-  useEffect(() => {
-   StreamingMedia.playVideo('https://firebasestorage.googleapis.com/v0/b/habit-tracker-7c2ac.appspot.com/o/HabitTracerOnboarding.mp4?alt=media&token=bb62a783-972e-434c-973c-f968f25fa721', options)
-  }, [])
+  const [firstSlides, setFirstSlides] = useState(true);
 
   return (
     <IonPage>
       <IonContent>
-        <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        </div>
+        {premium && 
+          <IonSlides pager className={classes.slides}>
+            <IonSlide className={classes.slide}>
+              <div>
+                <img src={OBOne} alt="onboarding screenshot"/>
+              </div>
+            </IonSlide>
+
+            <IonSlide className={classes.slide}>
+              <div>
+                <img src={OBTwo} alt="onboarding screenshot"/>
+              </div>
+            </IonSlide>
+
+            <IonSlide className={classes.slide}>
+              <div>
+              <img src={OBThree} alt="onboarding screenshot"/>
+              </div>
+            </IonSlide>
+
+            <IonSlide className={classes.slide}>
+              <Login />
+            </IonSlide> 
+        </IonSlides>
+        }
+        {!premium && 
+          <>
+            {firstSlides &&
+              <IonSlides pager className={classes.slides}>
+                <IonSlide className={classes.slide}>
+                  <div>
+                    <img src={OBOne} alt="onboarding screenshot"/>
+                  </div>
+                </IonSlide>
+
+                <IonSlide className={classes.slide}>
+                  <div>
+                    <img src={OBTwo} alt="onboarding screenshot"/>
+                  </div>
+                </IonSlide>
+
+                <IonSlide className={classes.slide}>
+                  <Premium onNext={() => setFirstSlides(false)}/>
+                </IonSlide> 
+              </IonSlides>
+            }
+
+            {!firstSlides && 
+              <IonSlides pager className={classes.slides}>
+                <IonSlide className={classes.slide}>
+                  <div>
+                  <img src={OBThree} alt="onboarding screenshot"/>
+                  </div>
+                </IonSlide>
+
+                <IonSlide className={classes.slide}>
+                  <Login />
+                </IonSlide> 
+              </IonSlides>
+              }
+          </>
+          }
       </IonContent>
     </IonPage>
   )
 }
 
-export default Onboarding
+export default connect(mapStateToProps)(Onboarding);

@@ -9,7 +9,7 @@ export interface Stats{
 
 export const StatsTemplate: Stats = {
   stats: {},
-  today: {habitCount: 0, habitsCompleted: 0}
+  today: {habitCount: 0, habitsCompleted: 0},
 }
 
 export type StatsAction = 

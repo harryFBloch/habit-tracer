@@ -46,9 +46,20 @@ export const getProducts = (products: IAPProducts): ThunkResult<Promise<void>> =
     dispatch({type: ActionType.GET_PRODUCTS, products: products});
 }
 
-export const subscribe = (productID: string): ThunkResult<Promise<void>> =>
-async ( dispatch: ThunkDispatchType): Promise<void> => {
-  InAppPurchase2.order(productID)
+export const subscribe = (productID: string): ThunkResult<Promise<string>> =>
+async ( dispatch: ThunkDispatchType): Promise<string> => {
+   InAppPurchase2.order(productID)
+  // .then(() => {
+  //   console.log('success');
+  //   // Promise.resolve()
+  // })
+  // .catch(() => Promise.reject('error'))
+  return Promise.resolve('')
+}
+
+export const upgradePremium = (): ThunkResult<Promise<void>> =>
+  async ( dispatch: ThunkDispatchType): Promise<void> => {
+    dispatch({type: ActionType.UPGRADE_PREMIUM});
 }
 
 export const removeAds = (): ThunkResult<Promise<void>> =>
@@ -59,4 +70,9 @@ export const removeAds = (): ThunkResult<Promise<void>> =>
 export const restorePurchase = (): ThunkResult<Promise<void>> =>
   async ( dispatch: ThunkDispatchType): Promise<void> => {
     InAppPurchase2.refresh()
+}
+
+export const togglePauseAds = (): ThunkResult<Promise<void>> =>
+  async ( dispatch: ThunkDispatchType): Promise<void> => {
+    dispatch({type: ActionType.TOGGLE_PAUSE_ADS});
 }

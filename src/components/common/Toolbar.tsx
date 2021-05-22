@@ -5,12 +5,13 @@ import { menu, arrowBack } from 'ionicons/icons';
 
 interface Props {
   back?: boolean;
+  backOnClick?: () => void;
   blank? : boolean;
   rightButtons?: ReactElement;
   rightMenu?: boolean;
 }
 
-export const Toolbar = ( { back = false, blank = false, rightButtons, rightMenu }: Props): ReactElement => {
+export const Toolbar = ( { back = false, blank = false, rightButtons, rightMenu, backOnClick }: Props): ReactElement => {
 
   return (
     <IonHeader>
@@ -18,7 +19,7 @@ export const Toolbar = ( { back = false, blank = false, rightButtons, rightMenu 
         {!blank && 
           <IonButtons slot="start">
             {back && 
-              <IonButton routerDirection="none" routerLink="/home" className="ion-no-margin ion-no-padding">
+              <IonButton routerDirection="root" routerLink="/home" className="ion-no-margin ion-no-padding" onClick={backOnClick}>
                 <IonIcon icon={arrowBack}/>
               </IonButton>
             }

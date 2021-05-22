@@ -1,5 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
+import firebase from '../config/FirebaseConfig';
+import 'firebase/analytics';
 import { connect } from 'react-redux';
 import {
   IonInput,
@@ -8,11 +10,11 @@ import {
   IonPage,
   IonButton,
   IonAlert,
-  IonContent,
 } from '@ionic/react';
 import classes from './Login.module.css'
 import { ThunkDispatchType, actions } from '../store';
 import { bindActionCreators } from 'redux';
+
 
 interface ReduxDispatchProps {
   login: (email: string, password: string) => Promise<void>;
@@ -35,7 +37,10 @@ export const Login = ({history, login, signUp, resetPassword}: RouteComponentPro
   const [forgotPassword, setForgotPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+
   const handleSignUp = (): void => {
+    firebase.analytics().logEvent('sign up attempt')
+    console.log('blah', password, password2)
     if (password === password2) {
       signUp(email, password)
       .then((): void => {
@@ -65,15 +70,12 @@ export const Login = ({history, login, signUp, resetPassword}: RouteComponentPro
   }
 
   const renderLogin = (): ReactElement => {
+    firebase.analytics().logEvent('render login')
     return (
       <>
         <div className={classes.centerContainer}>
         <IonLabel color="primary" className={classes.title}>
-          Login or&nbsp;
-          <span className={classes.linkStyle} onClick={(): void => {
-            setLoginMode(false);
-            setErrorMessage('');
-            }}>Sign up!</span>
+          Login
         </IonLabel>
         </div>
         <IonItem className={classes.inputItem}>
@@ -88,6 +90,7 @@ export const Login = ({history, login, signUp, resetPassword}: RouteComponentPro
         <div className={`${classes.centerContainer} ${classes.topPadding}`}>
           <div>
             <div className={classes.buttonContainer}>
+              <IonButton onClick={() => setLoginMode(false)} className={classes.title}>Sign Up</IonButton>
               <IonButton onClick={handleLogin} className={classes.title}>Log In</IonButton>
             </div>
             
@@ -136,45 +139,40 @@ export const Login = ({history, login, signUp, resetPassword}: RouteComponentPro
   )
 
   return (
-    <IonPage >
-      <IonContent>
-        <div className={classes.pageContainer}>
-
-          <div className={classes.formContainer}>
-          {loginMode ? renderLogin() : renderSignUp()}
-          <h5 className={classes.errorNote}>{errorMessage}</h5>
-          </div>
-          <IonAlert
-              isOpen={forgotPassword}
-              onDidDismiss={() => setForgotPassword(false)}
-              cssClass='my-custom-class'
-              header={'Enter your email to recieve a forgot password link'}
-              inputs={[
-                {
-                  name: 'email',
-                  type: 'text',
-                },
-                
-              ]}
-              buttons={[
-                {
-                  text: 'Cancel',
-                  role: 'cancel',
-                  cssClass: 'secondary',
-                  handler: () => {
-                    console.log('Confirm Cancel');
-                  }
-                },
-                {
-                  text: 'Ok',
-                  handler: (value) => {
-                    resetPassword(value.email)
-                  }
-                }
-              ]}
-            />
-        </div>
-      </IonContent>
+    <IonPage className={classes.pageContainer}>
+      <div className={classes.formContainer}>
+      {loginMode ? renderLogin() : renderSignUp()}
+      <h5 className={classes.errorNote}>{errorMessage}</h5>
+      </div>
+      <IonAlert
+          isOpen={forgotPassword}
+          onDidDismiss={() => setForgotPassword(false)}
+          cssClass='my-custom-class'
+          header={'Enter your email to recieve a forgot password link'}
+          inputs={[
+            {
+              name: 'email',
+              type: 'text',
+            },
+            
+          ]}
+          buttons={[
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Confirm Cancel');
+              }
+            },
+            {
+              text: 'Ok',
+              handler: (value) => {
+                resetPassword(value.email)
+              }
+            }
+          ]}
+        />
     </IonPage>
   )
 }

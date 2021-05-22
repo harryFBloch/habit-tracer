@@ -13,6 +13,8 @@ export interface Flags {
   showInterAd: boolean,
   products: IAPProduct[],
   removeAds: boolean,
+  pauseAds: boolean,
+  premium: boolean,
 }
 
 // export const productTemplate: IAPProduct = {
@@ -45,5 +47,7 @@ export type FlagsAction =
   { type: ActionType.SHOW_INTER_AD} | 
   { type: ActionType.CLOSE_INTER_AD } |
   { type: ActionType.GET_PRODUCTS, products: IAPProduct[]} | 
-  { type: ActionType.REMOVE_ADS }
+  { type: ActionType.REMOVE_ADS } | 
+  { type: ActionType.TOGGLE_PAUSE_ADS } |
+  { type: ActionType.UPGRADE_PREMIUM }
   

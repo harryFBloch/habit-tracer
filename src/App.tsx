@@ -5,6 +5,10 @@ import { IonReactRouter } from '@ionic/react-router';
 import firebase from './config/FirebaseConfig';
 import 'firebase/auth';
 import 'firebase/analytics';
+
+import { Plugins } from "@capacitor/core";
+import { Response } from 'capacitor-ios-app-tracking'
+
 import Home from './pages/Home';
 
 /* Core CSS required for Ionic components to work properly */
@@ -29,6 +33,11 @@ import './App.css'
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Onboarding from './pages/Onboarding';
+import './App.css'
+import Challenge from './pages/Challenge';
+import Premium from './pages/Premium';
+
+const { IOSAppTracking } = Plugins
 
 
 const App: React.FC = () => {
@@ -47,18 +56,27 @@ const App: React.FC = () => {
     })
     }, [])
 
+  useEffect((): void => {
+    IOSAppTracking.getTrackingStatus().then((res: Response ) => console.log(res,'TRACKING'));
+    IOSAppTracking.requestPermission().then((res: Response) => console.log(res,'TRACKING'));
+  },[])
+
+
   return (
   <Provider store={store}>
     <IonApp>
       <IonReactRouter>
-        <AdMobContainer />
+        
+        <AdMobContainer top={false}/>
         <InAppPurchase />
         <LeftMenu />
         <IonRouterOutlet id="main">
           <PrivateRoute path="/home" component={Home} exact={true} />
           <PrivateRoute path="/add_habit" component={AddHabit} exact={true} />
           <PrivateRoute path="/edit_habit/:habitID" component={AddHabit} />
-          <PrivateRoute path="/onboarding" component={Onboarding} exact={true} />
+          <PrivateRoute path="/challenge/:challenge" component={Challenge} />
+          <PrivateRoute path="/premium" component={Premium} exact={true} />
+          <PublicRoute path="/onboarding" component={Onboarding} exact={true} />
           <PublicRoute path="/login" component={Login} />
           <PublicRoute path="/terms" component={Terms} />
           <PublicRoute path="/privacy" component={Privacy} />
