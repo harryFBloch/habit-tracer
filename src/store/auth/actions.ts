@@ -1,7 +1,9 @@
 import { ThunkResult, ThunkDispatchType } from '../types';
 import { ActionType } from '../actionTypes';
 import firebase from '../../config/FirebaseConfig';
+import { auth } from 'firebase';
 import 'firebase/database';
+import { SignInWithApple, AppleSignInResponse, AppleSignInErrorResponse, ASAuthorizationAppleIDRequest } from '@ionic-native/sign-in-with-apple';
 
 import { RootState } from '..';
 
@@ -15,6 +17,39 @@ async ( dispatch: ThunkDispatchType ): Promise<void> => {
     }
   })
   .catch((error) => Promise.reject(error))
+};
+
+
+export const appleLogin = (): ThunkResult<Promise<void | object>> =>
+async ( dispatch: ThunkDispatchType ): Promise<void | object> => {
+  return SignInWithApple.signin({
+    requestedScopes: [
+      ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
+      ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
+    ]
+  })
+  .then((res: AppleSignInResponse) => {
+    let provider = new auth.OAuthProvider('apple.com');
+    const credentials = provider.credential({idToken: res.identityToken})
+    return firebase.auth().signInWithCredential(credentials)
+    .then((data) => {
+        console.log('apple-firebase-success')
+        if (data.user) {
+          dispatch({type: ActionType.LOGIN_SUCCESSFUL, uid: data.user.uid})
+          return Promise.resolve()
+        } 
+        return Promise.reject('');
+    })
+    .catch((error) => {
+      console.log("Error", error)
+      return Promise.reject(error);
+    })
+  })
+  .catch((error: AppleSignInErrorResponse) => {
+    alert(error.code + ' ' + error.localizedDescription);
+    console.error(error);
+    return Promise.reject(error);
+  });
 };
 
 export const login = (email: string, password: string): ThunkResult<Promise<void>> =>

@@ -30,6 +30,7 @@ class Private extends Component<Props> {
   render(): ReactElement {
     const { component, ...rest } = this.props;
     const routeRender = (props: any): ReactElement => {
+      console.log('routing')
       if (this.props.isLoading) {
         return <Loading/>;
       } else if (this.props.uid === "") {

@@ -23,6 +23,11 @@
     <param name="ios-package" value="APPLocalNotification"/>
   </feature>
 
+  <feature name="SignInWithApple">
+    <param name="ios-package" value="SignInWithApple"/>
+    <param name="onload" value="true"/>
+  </feature>
+
   <feature name="StreamingMedia">
     <param name="ios-package" value="StreamingMedia"/>
   </feature>

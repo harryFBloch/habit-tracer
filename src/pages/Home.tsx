@@ -67,9 +67,7 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
     .then(() => {
       getStats()
       .then((firstLogin) => {
-        if (firstLogin) {
-          history.push('/onboarding')
-        }
+        
       })
     })
     setQuote(randomQuote())

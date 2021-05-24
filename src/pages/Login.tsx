@@ -20,15 +20,17 @@ interface ReduxDispatchProps {
   login: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  loginWithApple: () => Promise<void | object>;
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatchType): ReduxDispatchProps => bindActionCreators({
   login: actions.auth.login,
   signUp: actions.auth.signUp,
   resetPassword: actions.auth.resetPassword,
+  loginWithApple: actions.auth.appleLogin,
 }, dispatch);
 
-export const Login = ({history, login, signUp, resetPassword}: RouteComponentProps & ReduxDispatchProps): ReactElement => {
+export const Login = ({history, login, signUp, resetPassword, loginWithApple}: RouteComponentProps & ReduxDispatchProps): ReactElement => {
 
   const [loginMode, setLoginMode] = useState(true);
   const [email, setEmail] = useState('');
@@ -52,6 +54,18 @@ export const Login = ({history, login, signUp, resetPassword}: RouteComponentPro
     } else {
       setErrorMessage('Passwords do not match!')
     }
+  }
+
+  const handleAppleLogin = (): void => {
+    loginWithApple()
+    .then(() => {
+      console.log('APPLE PUSHING HOME')
+      history.push('/home')
+    })
+    .catch((error) => {
+      setErrorMessage(error.message)
+    })
+
   }
 
   const handleLogin = (): void => {
@@ -93,6 +107,7 @@ export const Login = ({history, login, signUp, resetPassword}: RouteComponentPro
               <IonButton onClick={() => setLoginMode(false)} className={classes.title}>Sign Up</IonButton>
               <IonButton onClick={handleLogin} className={classes.title}>Log In</IonButton>
             </div>
+              <IonButton onClick={handleAppleLogin} className={classes.title}>Log In With Apple</IonButton>
             
             <p className={classes.note}>Having trouble logging in 
               <button className={classes.linkStyle} onClick={() => setForgotPassword(true)}>reset your password</button>

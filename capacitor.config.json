@@ -9,7 +9,5 @@
       "launchShowDuration": 3000
     }
   },
-  "cordova": {},
-  "server": {
-  }
+  "cordova": {}
 }
