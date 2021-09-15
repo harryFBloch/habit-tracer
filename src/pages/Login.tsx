@@ -150,6 +150,7 @@ export const Login = ({history, login, signUp, resetPassword, loginWithApple}: R
           <IonButton className={classes.title} onClick={handleCancel}>Cancel</IonButton>
         </div>
       </div>
+        <IonButton onClick={handleAppleLogin} className={classes.title}>Sign Up With Apple</IonButton>
     </>
   )
 
