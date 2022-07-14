@@ -1,8 +1,8 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import firebase from '../config/FirebaseConfig';
 import 'firebase/analytics';
-import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonList, IonContent } from '@ionic/react';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import { IonPage, IonInput, IonButton, IonItem, IonLabel, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonContent } from '@ionic/react';
+import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications';
 import { connect } from 'react-redux';
 import classes from './AddHabit.module.css'
 import { WEEKDAYS, RootState, ThunkDispatchType, Habit, actions, Habits } from '../store';

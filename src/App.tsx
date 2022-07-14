@@ -7,7 +7,6 @@ import 'firebase/auth';
 import 'firebase/analytics';
 
 import { Plugins } from "@capacitor/core";
-import { Response } from 'capacitor-ios-app-tracking'
 
 import Home from './pages/Home';
 
@@ -37,8 +36,6 @@ import './App.css'
 import Challenge from './pages/Challenge';
 import Premium from './pages/Premium';
 
-const { IOSAppTracking } = Plugins
-
 
 const App: React.FC = () => {
   useEffect((): void => {
@@ -55,11 +52,6 @@ const App: React.FC = () => {
       }
     })
     }, [])
-
-  useEffect((): void => {
-    IOSAppTracking.getTrackingStatus().then((res: Response ) => console.log(res,'TRACKING'));
-    IOSAppTracking.requestPermission().then((res: Response) => console.log(res,'TRACKING'));
-  },[])
 
 
   return (

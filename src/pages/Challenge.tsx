@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState} from 'react';
 import { IonButton, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonListHeader, IonPage, IonSegment, IonSegmentButton, IonText, IonToggle } from '@ionic/react';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Premium from '../components/common/Premium';

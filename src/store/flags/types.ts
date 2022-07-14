@@ -1,5 +1,5 @@
 import { ActionType } from '../actionTypes';
-import { IAPProduct } from '@ionic-native/in-app-purchase-2';
+import { IAPProduct } from '@awesome-cordova-plugins/in-app-purchase-2';
 
 export type Product = {
   productID: string,

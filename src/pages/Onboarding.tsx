@@ -22,6 +22,7 @@ const mapStateToProps = (state: RootState): ReduxStateProps => ({
 export const Onboarding = ({ premium }: ReduxStateProps): ReactElement => {
 
   const [firstSlides, setFirstSlides] = useState(true);
+  console.log(premium,'onbobarding')
 
   return (
     <IonPage>

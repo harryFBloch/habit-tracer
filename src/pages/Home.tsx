@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { arrowUndoCircle, addOutline, checkmarkDone, cog} from 'ionicons/icons';
 import Toolbar from '../components/common/Toolbar';
 import { randomQuote } from '../quotes';
-import { IAPProduct } from '@ionic-native/in-app-purchase-2';
+import { IAPProduct } from '@awesome-cordova-plugins/in-app-purchase-2';
 import { getTotalHabitsCompleted, getTodaysPercentage } from '../utils/Dates';
 import { Challenges } from '../store/challenge/types';
 import { ButtonWithButtons } from '../components/common/ButtonWithButtons';

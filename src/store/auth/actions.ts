@@ -3,7 +3,7 @@ import { ActionType } from '../actionTypes';
 import firebase from '../../config/FirebaseConfig';
 import { auth } from 'firebase';
 import 'firebase/database';
-import { SignInWithApple, AppleSignInResponse, AppleSignInErrorResponse, ASAuthorizationAppleIDRequest } from '@ionic-native/sign-in-with-apple';
+import { SignInWithApple, AppleSignInResponse, AppleSignInErrorResponse, ASAuthorizationAppleIDRequest } from '@awesome-cordova-plugins/sign-in-with-apple';
 
 import { RootState } from '..';
 
@@ -38,7 +38,7 @@ async ( dispatch: ThunkDispatchType ): Promise<void | object> => {
           dispatch({type: ActionType.LOGIN_SUCCESSFUL, uid: data.user.uid})
           return Promise.resolve()
         } 
-        return Promise.reject('');
+        return Promise.reject('apple reject');
     })
     .catch((error) => {
       console.log("Error", error)

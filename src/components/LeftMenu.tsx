@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { bindActionCreators } from 'redux';
 import { RootState, ThunkDispatchType, actions, Stats } from '../store';
 import classes from './LeftMenu.module.css';
-import { IAPProduct } from '@ionic-native/in-app-purchase-2';
+import { IAPProduct } from '@awesome-cordova-plugins/in-app-purchase-2';
 import Calendar from './common/Calendar';
 import { getFinishedDates, getAlmostFinishedDates } from '../utils/Dates';
 import { logout } from '../store/auth/actions';

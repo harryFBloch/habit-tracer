@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { isPlatform } from '@ionic/react';
 import { Plugins } from '@capacitor/core';
-import { AdOptions } from '@rdlabo/capacitor-admob';
+import { AdOptions } from '@capacitor-community/admob';
 import { AdMobIntersitionalIOS } from '../../config/FirebaseConfig';
 import { RootState, ThunkDispatchType, actions } from '../../store';
 import { bindActionCreators } from 'redux';

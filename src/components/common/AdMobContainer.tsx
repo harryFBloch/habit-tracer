@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { isPlatform } from '@ionic/react';
 import { Plugins } from '@capacitor/core';
-import { AdOptions, AdSize, AdPosition } from '@rdlabo/capacitor-admob';
+import { AdOptions } from '@capacitor-community/admob';
 import { AdMobBannerIOS, AdMobIntersitionalIOS } from '../../config/FirebaseConfig';
 import { bindActionCreators } from 'redux';
 import { ThunkDispatchType, RootState } from '../../store';
@@ -51,9 +51,6 @@ export const AdMobContainer = ({removeAds, top, pauseAds, loggedIn}: Props): Rea
 
       const bannerOptions: AdOptions = {
         adId: platformAdIdBanner,
-        adSize: AdSize.FLUID,
-        position: AdPosition.BOTTOM_CENTER,
-        margin: 0,
       }
 
       AdMob.showBanner(bannerOptions)

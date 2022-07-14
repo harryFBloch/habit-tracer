@@ -16,7 +16,9 @@
 .title {
   color: var(--ion-color-primary);
   margin: 16px;
-  
+  font-weight: bold;
+  font-size: 26px;
+  margin-top: 32px;
 }
 
 .subTitle {
@@ -67,4 +69,15 @@ display: flex;
 .imageContainer {
   display: flex;
   justify-content: center;
+}
+
+.toolbar {
+  --background: var(--ion-background-color);
+  --border-color: var(--ion-background-color)
+}
+
+.linkStyle {
+  text-decoration: underline;
+  color: var(--ion-color-secondary);
+  background-color: transparent;
 }
