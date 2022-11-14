@@ -22,6 +22,7 @@
 .linkStyle {
   text-decoration: underline;
   color: var(--ion-color-secondary);
+  background-color: transparent;
 }
 
 .topPadding {

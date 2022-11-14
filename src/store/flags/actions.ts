@@ -2,9 +2,9 @@ import { ThunkResult, ThunkDispatchType } from "../types";
 import { ActionType } from "../actionTypes";
 import { isPlatform } from '@ionic/react';
 import { Plugins } from '@capacitor/core';
-import { AdOptions } from '@rdlabo/capacitor-admob';
+import { AdOptions } from '@capacitor-community/admob';
 import { AdMobIntersitionalIOS } from '../../config/FirebaseConfig';
-import { IAPProducts, InAppPurchase2 } from "@ionic-native/in-app-purchase-2";
+import { IAPProducts, InAppPurchase2 } from "@awesome-cordova-plugins/in-app-purchase-2";
 import { RootState } from "..";
 
 const { AdMob } = Plugins;

@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
-import {InAppPurchase2, IAPProduct, IAPProducts} from '@ionic-native/in-app-purchase-2';
+import {InAppPurchase2, IAPProduct, IAPProducts} from '@awesome-cordova-plugins/in-app-purchase-2';
 import { connect } from 'react-redux';
 import { RootState, ThunkDispatchType, actions } from "../../store";
 import { bindActionCreators } from "redux";
@@ -41,6 +41,10 @@ export const InAppPurchaseContainer = ({ getProducts, removeAds , history, upgra
       id: 'PA',
       type: InAppPurchase2.PAID_SUBSCRIPTION,
     })
+    store.register({
+      id: 'year',
+      type: InAppPurchase2.PAID_SUBSCRIPTION,
+    })
 
 
     // Run some code only when the store is ready to be used
@@ -48,11 +52,31 @@ export const InAppPurchaseContainer = ({ getProducts, removeAds , history, upgra
       getProducts(store.products)
     });
 
+    store.when("year").updated((product: IAPProduct) => {
+      if (product.owned)
+        upgradePremium()
+      else
+          console.log('unowned year')     
+    });
+
+    store.when('year')
+     .approved((p: IAPProduct) => p.verify())
+     .verified((p: IAPProduct) => p.finish())
+     .owned((p: IAPProduct) => {
+      if (p.owned) {
+        console.log('year owned')
+        upgradePremium()
+        if(history.location.pathname !== '/onboarding') {
+          history.push('/home')
+        }
+      }
+     });
+
     store.when("PA").updated((product: IAPProduct) => {
       if (product.owned)
         upgradePremium()
       else
-          console.log('unowned')     
+          console.log('unowned monthly')     
     });
 
     store.when('PA')
@@ -60,6 +84,7 @@ export const InAppPurchaseContainer = ({ getProducts, removeAds , history, upgra
      .verified((p: IAPProduct) => p.finish())
      .owned((p: IAPProduct) => {
       if (p.owned) {
+        console.log('PA owned')
         upgradePremium()
         if(history.location.pathname !== '/onboarding') {
           history.push('/home')

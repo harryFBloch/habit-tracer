@@ -42,11 +42,13 @@ export const Login = ({history, login, signUp, resetPassword, loginWithApple}: R
 
   const handleSignUp = (): void => {
     firebase.analytics().logEvent('sign up attempt')
-    console.log('blah', password, password2)
     if (password === password2) {
       signUp(email, password)
       .then((): void => {
         console.log('success')
+        setPassword('');
+        setPassword2('');
+        history.push('/home');
       })
       .catch((error) => {
         setErrorMessage(error.message)

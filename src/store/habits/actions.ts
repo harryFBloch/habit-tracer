@@ -1,6 +1,6 @@
 import firebase from '../../config/FirebaseConfig';
 import 'firebase/database';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications';
 import { ThunkResult, ThunkDispatchType } from "../types";
 import { ActionType } from "../actionTypes";
 import { Habit, Habits } from "./types";

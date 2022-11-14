@@ -1,7 +1,7 @@
 import { ActionType } from "../actionTypes";
 import { Flags } from "./types";
 import { RootAction } from "..";
-import { IAPProduct } from '@ionic-native/in-app-purchase-2';
+import { IAPProduct } from '@awesome-cordova-plugins/in-app-purchase-2';
 
 const initialState: Flags = {
   showInterAd: false,
