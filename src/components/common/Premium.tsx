@@ -53,7 +53,8 @@ export const Premium = ({ restorePurchase, products, history, subscribe, onNext}
           <IonButton onClick={() => {
             if(onNext){ 
               onNext()
-            }}}>
+            }
+            }}>
             <IonIcon icon={closeOutline}/>
           </IonButton>
         </IonButtons>
@@ -102,7 +103,7 @@ export const Premium = ({ restorePurchase, products, history, subscribe, onNext}
       
       <div className={classes.buttonContainer}>
         <IonButton className={classes.purchaseButton} color="tertiary" onClick={handlebuttonPress}>
-        Continue
+          Continue
         </IonButton>
         <IonButton size="small" fill="clear" onClick={restorePurchase} className={classes.linkButton}>
           Restore Purchase

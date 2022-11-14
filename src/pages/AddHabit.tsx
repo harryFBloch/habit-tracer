@@ -65,6 +65,7 @@ export const AddHabit = ({ addNewHabit, history, habits, match, updateHabit, sho
           LocalNotifications.schedule({
             id: Object.keys(habits).length * 10 + weekday,
             title: `TIME TO ${habitName}`,
+            
             trigger: {every: { weekday: weekday, hour: Number(timeArray[0]), minute: Number(timeArray[1])}, count: 365}
           })
         }

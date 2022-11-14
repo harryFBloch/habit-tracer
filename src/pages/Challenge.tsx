@@ -46,9 +46,9 @@ interface MatchParams {
 
 interface MatchProps extends RouteComponentProps<MatchParams>{}
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & MatchProps
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & MatchProps & RouteComponentProps
 
-export const ChallengeView = ({ challenges, match, challengeStats, updateSettingsForChallenge, getChallengeStat, getDayStat, updateDayStat, premium }: Props): ReactElement => {
+export const ChallengeView = ({ challenges, match, challengeStats, updateSettingsForChallenge, getChallengeStat, getDayStat, updateDayStat, premium, history }: Props): ReactElement => {
 
   const challengeID = Number(match.params.challenge);
 
@@ -237,13 +237,13 @@ export const ChallengeView = ({ challenges, match, challengeStats, updateSetting
   return (
     <IonPage>
       <IonContent>
+        {!premium && <Premium onNext={() => history.push('/')}/>}
+
+        {premium && <>
         <Toolbar back rightButtons={<>
           {settings === 'settings' && 
           <IonButton onClick={handleSaveSettings}>Save</IonButton>}
         </>}/>
-        {!premium && <Premium/>}
-
-        {premium && <>
           <IonSegment onIonChange={e => setSettings(String(e.detail.value))} value={settings}>
           <IonSegmentButton value="challenge" defaultChecked={true}>
             <IonLabel>Challenge</IonLabel>
