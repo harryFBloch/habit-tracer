@@ -5,15 +5,17 @@
   "dependencies": {
     "@awesome-cordova-plugins/core": "5.43.0",
     "@awesome-cordova-plugins/in-app-purchase-2": "5.43.0",
+    "@awesome-cordova-plugins/in-app-review": "^5.44.0",
     "@awesome-cordova-plugins/local-notifications": "5.43.0",
     "@awesome-cordova-plugins/sign-in-with-apple": "5.43.0",
     "@awesome-cordova-plugins/streaming-media": "5.43.0",
     "@capacitor-community/admob": "^3.2.0",
-    "@capacitor/core": "^3.6.0",
-    "@capacitor/ios": "3.6.0",
+    "@capacitor/core": "^4.0.1",
+    "@capacitor/ios": "^4.0.1",
     "@ionic/cli": "6.20.1",
     "@ionic/react": "^5.6.7",
     "@ionic/react-router": "^5.6.7",
+    "@ionic/storage": "^3.0.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^8.0.3",
@@ -29,6 +31,7 @@
     "cc.fovea.cordova.purchase": "^10.5.3",
     "chart.js": "^2.9.4",
     "cli": "^1.0.1",
+    "com.omarben.inappreview": "^0.0.6",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-inapppurchase": "^1.2.0",
@@ -74,7 +77,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "^3.6.0"
+    "@capacitor/cli": "^4.0.1"
   },
   "description": "An Ionic project"
 }

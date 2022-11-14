@@ -16,6 +16,7 @@ import { IAPProduct } from '@awesome-cordova-plugins/in-app-purchase-2';
 import { getTotalHabitsCompleted, getTodaysPercentage } from '../utils/Dates';
 import { Challenges } from '../store/challenge/types';
 import { ButtonWithButtons } from '../components/common/ButtonWithButtons';
+import Rating from '../components/common/Rating';
 
 interface ReduxStateProps {
   habits: Habits;
@@ -72,6 +73,10 @@ const Home = ({getHabits, habits, deleteHabit, getStats, completeHabit, unComple
     })
     setQuote(randomQuote())
   }, [getHabits, getStats])
+
+    useEffect(() => {
+      Rating(() => {});
+    }, [])
 
   const listRef = useRef<HTMLIonListElement>(null)
 

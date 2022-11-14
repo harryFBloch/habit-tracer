@@ -7,6 +7,10 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="Review">
+    <param name="ios-package" value="SKstorereview"/>
+  </feature>
+
   <feature name="Badge">
     <param name="ios-package" value="APPBadge"/>
   </feature>
